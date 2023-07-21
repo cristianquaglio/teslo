@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import {
     AppBar,
@@ -16,6 +17,8 @@ import {
 } from '@mui/icons-material';
 
 export const Navbar = () => {
+    const { asPath } = useRouter();
+
     return (
         <AppBar>
             <Toolbar>
@@ -31,17 +34,41 @@ export const Navbar = () => {
                 <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                     <NextLink href='/category/men' passHref legacyBehavior>
                         <Link>
-                            <Button>Hombres</Button>
+                            <Button
+                                color={
+                                    asPath === '/category/men'
+                                        ? 'info'
+                                        : 'primary'
+                                }
+                            >
+                                Hombres
+                            </Button>
                         </Link>
                     </NextLink>
                     <NextLink href='/category/women' passHref legacyBehavior>
                         <Link>
-                            <Button>Mujeres</Button>
+                            <Button
+                                color={
+                                    asPath === '/category/women'
+                                        ? 'info'
+                                        : 'primary'
+                                }
+                            >
+                                Mujeres
+                            </Button>
                         </Link>
                     </NextLink>
-                    <NextLink href='/category/children' passHref legacyBehavior>
+                    <NextLink href='/category/kid' passHref legacyBehavior>
                         <Link>
-                            <Button>Niños</Button>
+                            <Button
+                                color={
+                                    asPath === '/category/kid'
+                                        ? 'info'
+                                        : 'primary'
+                                }
+                            >
+                                Niños
+                            </Button>
                         </Link>
                     </NextLink>
                 </Box>

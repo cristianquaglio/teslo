@@ -8,9 +8,11 @@ import {
     Box,
     Typography,
     Link,
+    Chip,
 } from '@mui/material';
 
 import { IProduct } from '@/interfaces';
+import zIndex from '@mui/material/styles/zIndex';
 
 interface Props {
     product: IProduct;
@@ -43,6 +45,18 @@ export const ProductCard: FC<Props> = ({ product }) => {
                 >
                     <Link>
                         <CardActionArea>
+                            {product.inStock === 0 && (
+                                <Chip
+                                    color='secondary'
+                                    label='No hay disponibles'
+                                    sx={{
+                                        position: 'absolute',
+                                        zIndex: 99,
+                                        top: '10px',
+                                        left: '10px',
+                                    }}
+                                />
+                            )}
                             <CardMedia
                                 component='img'
                                 className='fadeIn'

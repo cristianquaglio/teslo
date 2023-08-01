@@ -20,6 +20,24 @@ export const CartProvider: FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
 
     useEffect(() => {
+        try {
+            const cookieProducts = Cookie.get('cart')
+                ? JSON.parse(Cookie.get('cart')!)
+                : [];
+            dispatch({
+                type: '[Cart] - Load cart from cookies | storage',
+                payload: cookieProducts,
+            });
+        } catch (error) {
+            dispatch({
+                type: '[Cart] - Load cart from cookies | storage',
+                payload: [],
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (state.cart.length === 0) return;
         Cookie.set('cart', JSON.stringify(state.cart));
     }, [state.cart]);
 

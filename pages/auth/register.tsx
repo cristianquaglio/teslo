@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { useForm } from 'react-hook-form';
 import {
@@ -14,7 +15,7 @@ import { ErrorOutline } from '@mui/icons-material';
 
 import { AuthLayout } from '@/components/layouts';
 import { validations } from '@/utils';
-import { tesloApi } from '@/api';
+import { AuthContext } from '@/context';
 
 type formData = {
     name: string;
@@ -23,31 +24,28 @@ type formData = {
 };
 
 const RegisterPage = () => {
+    const router = useRouter();
+    const { registerUser } = useContext(AuthContext);
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<formData>();
     const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const onRegisterForm = async ({ name, email, password }: formData) => {
         setShowError(false);
-        try {
-            const { data } = await tesloApi.post('/user/register', {
-                name,
-                email,
-                password,
-            });
-            const { token, user } = data;
-            console.log({ token, user });
-        } catch (error) {
+        const { hasError, message } = await registerUser(name, email, password);
+        if (hasError) {
             setShowError(true);
+            setErrorMessage(message!);
             setTimeout(() => {
                 setShowError(false);
             }, 3000);
-            console.log('Error en las credenciales');
         }
-        // TODO: navegar a la pantalla del usuario
+        router.replace('/');
     };
 
     return (

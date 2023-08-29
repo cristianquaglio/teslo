@@ -125,7 +125,11 @@ const RegisterPage = () => {
                         </Grid>
                         <Grid item xs={12} display='flex' justifyContent='end'>
                             <NextLink
-                                href='/auth/login'
+                                href={
+                                    router.query.p && router.query.p !== '/'
+                                        ? `/auth/login?p=${router.query.p.toString()}`
+                                        : '/auth/login'
+                                }
                                 passHref
                                 legacyBehavior
                             >

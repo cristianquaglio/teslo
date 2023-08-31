@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import NextLink from 'next/link';
 import {
     Box,
     Button,
@@ -11,9 +13,27 @@ import {
 
 import { ShopLayout } from '@/components/layouts';
 import { OrderSummary, CartList } from '@/components/cart';
-import NextLink from 'next/link';
+import { CartContext } from '@/context';
+import { countries } from '@/utils';
 
 const SummaryPage = () => {
+    const { shippingAddress, numberOfItems } = useContext(CartContext);
+
+    if (!shippingAddress) {
+        return <></>;
+    }
+
+    const {
+        firstName,
+        lastName,
+        address,
+        zip,
+        city,
+        phone,
+        country,
+        address2 = '',
+    } = shippingAddress;
+
     return (
         <ShopLayout
             title='Resumen de orden'
@@ -30,7 +50,9 @@ const SummaryPage = () => {
                     <Card className='summary-card'>
                         <CardContent>
                             <Typography variant='h2'>
-                                Resumen (3 productos)
+                                Resumen ({numberOfItems}{' '}
+                                {numberOfItems === 1 ? 'producto' : 'productos'}
+                                )
                             </Typography>
                             <Divider sx={{ my: 1 }} />
 
@@ -47,11 +69,23 @@ const SummaryPage = () => {
                                 </NextLink>
                             </Box>
 
-                            <Typography>Cristian Quagliozzi</Typography>
-                            <Typography>323 Algun Lugar</Typography>
-                            <Typography>Stittsville, HYA 235</Typography>
-                            <Typography>Venezuela</Typography>
-                            <Typography>+11 23132535532</Typography>
+                            <Typography>
+                                {firstName} {lastName}
+                            </Typography>
+                            <Typography>
+                                {address}
+                                {address2 ? `, ${address2}` : ''}
+                            </Typography>
+                            <Typography>
+                                {city}, {zip}
+                            </Typography>
+                            <Typography>
+                                {
+                                    countries.find((c) => c.code === country)
+                                        ?.name
+                                }
+                            </Typography>
+                            <Typography>{phone}</Typography>
 
                             <Divider sx={{ my: 1 }} />
 

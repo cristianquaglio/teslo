@@ -49,6 +49,7 @@ const CartPage = () => {
                                     color='secondary'
                                     className='circular-btn'
                                     fullWidth
+                                    href='/checkout/address'
                                 >
                                     Checkout
                                 </Button>

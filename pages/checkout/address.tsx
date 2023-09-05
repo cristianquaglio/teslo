@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import {
@@ -46,9 +46,14 @@ const AddressPage = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<FormData>({
         defaultValues: getAddressFromCookies(),
     });
+
+    useEffect(() => {
+        reset(getAddressFromCookies());
+    }, [reset]);
 
     const router = useRouter();
 
